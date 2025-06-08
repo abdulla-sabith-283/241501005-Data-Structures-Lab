@@ -1,0 +1,79 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Insert at end
+void insert(struct Node** head, int value) {
+    struct Node* newNode = malloc(sizeof(struct Node));
+    newNode->data = value;
+    newNode->next = NULL;
+
+    if (*head == NULL) {
+        *head = newNode;
+        return;
+    }
+
+    struct Node* temp = *head;
+    while (temp->next != NULL)
+        temp = temp->next;
+    temp->next = newNode;
+}
+
+// Delete by value
+void delete(struct Node** head, int value) {
+    struct Node *temp = *head, *prev = NULL;
+
+    if (temp != NULL && temp->data == value) {
+        *head = temp->next;
+        free(temp);
+        return;
+    }
+
+    while (temp != NULL && temp->data != value) {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    if (temp == NULL) return;
+
+    prev->next = temp->next;
+    free(temp);
+}
+
+// Display list
+void display(struct Node* head) {
+    while (head != NULL) {
+        printf("%d -> ", head->data);
+        head = head->next;
+    }
+    printf("NULL\n");
+}
+
+// Main function
+int main() {
+    struct Node* head = NULL;
+
+    // Insert values
+    insert(&head, 10);
+    insert(&head, 20);
+    insert(&head, 30);
+    printf("List after insertion:\n");
+    display(head);  // Expected: 10 -> 20 -> 30 -> NULL
+
+    // Delete value
+    delete(&head, 20);
+    printf("List after deleting 20:\n");
+    display(head);  // Expected: 10 -> 30 -> NULL
+
+    // Insert more
+    insert(&head, 40);
+    insert(&head, 50);
+    printf("List after inserting 40 and 50:\n");
+    display(head);  // Expected: 10 -> 30 -> 40 -> 50 -> NULL
+
+    return 0;
+}
