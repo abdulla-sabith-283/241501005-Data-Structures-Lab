@@ -1,0 +1,53 @@
+#include <stdio.h>
+#define SIZE 10
+
+int hashTable[SIZE];
+
+void init() {
+    for (int i = 0; i < SIZE; i++)
+        hashTable[i] = -1; // -1 means empty
+}
+
+int hash(int key) {
+    return key % SIZE;
+}
+
+void insert(int key) {
+    int index = hash(key);
+
+    for (int i = 0; i < SIZE; i++) {
+        int try = (index + i) % SIZE;
+        if (hashTable[try] == -1) {
+            hashTable[try] = key;
+            return;
+        }
+    }
+
+    // Table full
+    printf("Hash table full. Couldn't insert %d\n", key);
+}
+
+void display() {
+    for (int i = 0; i < SIZE; i++)
+        printf("%d ", hashTable[i]);
+    printf("\n");
+}
+
+int main() {
+    init();
+
+    insert(10);
+    insert(20);
+    insert(30);
+    insert(25);
+    insert(35);
+    insert(45);
+    insert(55);
+    insert(65);
+    insert(75);
+    insert(85);
+
+    display();
+
+    return 0;
+}
